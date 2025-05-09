@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Verify Certificate | Dtech EDU</title>
+{% endblock title %}
+
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0 text-center">
+                        <i class="fas fa-certificate me-2"></i>Dtech EDU Certificate Verification
+                    </h3>
+                </div>
+                
+                <div class="card-body">
+                    {% if valid %}
+                        <div class="alert alert-success">
+                            <h4 class="alert-heading">
+                                <i class="fas fa-check-circle"></i> Valid Certificate
+                            </h4>
+                            <p>This certificate has been verified and is authentic.</p>
+                        </div>
+                        
+                        <div class="certificate-details">
+                            <div class="row mb-3">
+                                <div class="col-md-4 fw-bold">Certificate Code:</div>
+                                <div class="col-md-8">{{ enrolment.certificate_code }}</div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4 fw-bold">Student Name:</div>
+                                <div class="col-md-8">{{ enrolment.user.get_full_name }}</div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4 fw-bold">Course Completed:</div>
+                                <div class="col-md-8">{{ enrolment.cohort.certificate_name }}</div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4 fw-bold">Duration:</div>
+                                <div class="col-md-8">{{ enrolment.cohort.duration_weeks }} weeks</div>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4 fw-bold">Completion Date:</div>
+                                <div class="col-md-8">{{ enrolment.completion_date|date:"F j, Y" }}</div>
+                            </div>
+                            
+                            <div class="text-center mt-4">
+                                <!--<a href="https://{{web_url}}/download-certificate/26/" class="btn btn-primary me-2">
+                                    <i class="fas fa-download me-1"></i> Download Certificate
+                                </a>-->
+                                <button onclick="window.print()" class="btn btn-outline-secondary">
+                                    <i class="fas fa-print me-1"></i> Print Verification
+                                </button>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-danger">
+                            <h4 class="alert-heading">
+                                <i class="fas fa-exclamation-circle"></i> Invalid Certificate
+                            </h4>
+                            <p>The certificate code <strong>{{ code }}</strong> could not be found in our records.</p>
+                            <hr>
+                            <p class="mb-0">Please check the code and try again, or contact support if you believe this is an error.</p>
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <a href="/" class="btn btn-primary">
+                                <i class="fas fa-home me-1"></i> Return Home
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="card-footer text-muted text-center">
+                    <small>Verified on {% now "F j, Y H:i" %}</small>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</div>
+
+<style>
+    .certificate-details {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 20px;
+    }
+    
+    @media print {
+        .no-print {
+            display: none;
+        }
+        
+        .card {
+            border: none;
+            box-shadow: none;
+        }
+    }
+</style>
+{% endblock %}
